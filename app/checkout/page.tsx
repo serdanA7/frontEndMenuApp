@@ -14,13 +14,14 @@ export default function Checkout() {
   const [loading, setLoading] = useState(false);
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const router = useRouter();
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
 
   // Fetch default ingredients for all items in cart that don't have custom ingredients
   useEffect(() => {
     const fetchDefaults = async () => {
       const missing = cart.filter(item => !item.ingredients || item.ingredients.length === 0);
       const promises = missing.map(async item => {
-        const res = await fetch(`http://localhost:3001/api/v1/menu-items/${item.id}`);
+        const res = await fetch(`${API_URL}/menu-items/${item.id}`);
         const data = await res.json();
         return { id: item.id, ingredients: (data.Ingredients || []).map((ing: any) => ing.name) };
       });
@@ -38,7 +39,7 @@ export default function Checkout() {
     setLoading(true);
     try {
       const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-      const res = await fetch("http://localhost:3001/api/v1/orders/checkout", {
+      const res = await fetch(`${API_URL}/orders/checkout`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
