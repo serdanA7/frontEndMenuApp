@@ -61,6 +61,10 @@ const LoginPage = () => {
             {error}
           </div>
         )}
+        <div style={{ textAlign: 'center', marginTop: 18 }}>
+          <span style={{ color: '#111' }}>Don't have an account? </span>
+          <a href="/signup" style={{ color: '#111', fontWeight: 600, textDecoration: 'underline', cursor: 'pointer' }}>Sign Up</a>
+        </div>
       </div>
     </div>
   );
