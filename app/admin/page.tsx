@@ -28,7 +28,10 @@ const AdminDashboard = () => {
   const [addIngredientName, setAddIngredientName] = useState("");
   const [editIngredients, setEditIngredients] = useState<number[]>([]);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  if (!API_URL) {
+    return <div className="p-4 text-red-500">Error: API URL not configured</div>;
+  }
 
   useEffect(() => {
     if (user?.role !== 'admin') return;

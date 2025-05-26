@@ -14,7 +14,10 @@ export default function Checkout() {
   const [loading, setLoading] = useState(false);
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const router = useRouter();
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  if (!API_URL) {
+    return <div className="p-4 text-red-500">Error: API URL not configured</div>;
+  }
 
   // Fetch default ingredients for all items in cart that don't have custom ingredients
   useEffect(() => {

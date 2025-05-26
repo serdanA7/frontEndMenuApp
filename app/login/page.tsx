@@ -11,7 +11,10 @@ const LoginPage = () => {
   const router = useRouter();
   const { login } = useUser();
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  if (!API_URL) {
+    return <div className="p-4 text-red-500">Error: API URL not configured</div>;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

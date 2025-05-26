@@ -26,16 +26,24 @@ const MenuCategoryPage = () => {
   const [sort, setSort] = useState<string>("");
   const [order, setOrder] = useState<string>("");
   const [ingredientFilter, setIngredientFilter] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!category) return;
     setLoading(true);
-    let url = `http://localhost:3001/api/v1/menu-items?category=${category}`;
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    if (!API_URL) {
+      setError("API URL not configured");
+      setLoading(false);
+      return;
+    }
+    let url = `${API_URL}/menu-items?category=${category}`;
     if (sort && order) url += `&sort=${sort}&order=${order}`;
     if (ingredientFilter) url += `&ingredient=${ingredientFilter}`;
     fetch(url)
       .then(res => res.json())
       .then(data => setItems(data))
+      .catch(err => setError("Failed to fetch menu items"))
       .finally(() => setLoading(false));
   }, [category, sort, order, ingredientFilter]);
 
