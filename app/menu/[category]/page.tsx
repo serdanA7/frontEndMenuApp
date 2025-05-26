@@ -27,6 +27,8 @@ const MenuCategoryPage = () => {
   const [order, setOrder] = useState<string>("");
   const [ingredientFilter, setIngredientFilter] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [editId, setEditId] = useState<number | null>(null);
+  const [editForm, setEditForm] = useState<{ name: string; price: string; image?: string }>({ name: '', price: '', image: '' });
 
   useEffect(() => {
     if (!category) return;
@@ -46,6 +48,48 @@ const MenuCategoryPage = () => {
       .catch(err => setError("Failed to fetch menu items"))
       .finally(() => setLoading(false));
   }, [category, sort, order, ingredientFilter]);
+
+  const handleEdit = (item: MenuItem) => {
+    setEditId(item.id);
+    setEditForm({ name: item.name, price: item.price.toString(), image: item.image || '' });
+  };
+
+  const handleEditSave = async (id: number) => {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    if (!API_URL) return;
+    try {
+      const res = await fetch(`${API_URL}/menu-items/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: editForm.name, price: parseFloat(editForm.price), image: editForm.image })
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setItems(items => items.map(item => item.id === id ? updated : item));
+        setEditId(null);
+      } else {
+        alert('Failed to update item.');
+      }
+    } catch {
+      alert('Failed to update item.');
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!window.confirm('Are you sure you want to delete this menu item?')) return;
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    if (!API_URL) return;
+    try {
+      const res = await fetch(`${API_URL}/menu-items/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setItems(items => items.filter(item => item.id !== id));
+      } else {
+        alert('Failed to delete item.');
+      }
+    } catch {
+      alert('Failed to delete item.');
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -83,8 +127,20 @@ const MenuCategoryPage = () => {
               </button>
               {user?.role === 'admin' && (
                 <div style={{ position: 'absolute', left: 24, bottom: 18, zIndex: 3, display: 'flex', gap: 8 }}>
-                  <button style={{ background: '#ffc107', color: '#111', border: 'none', borderRadius: 4, padding: '6px 12px', fontWeight: 600, fontSize: 14, cursor: 'pointer' }} onClick={() => alert('Edit feature coming soon!')}>Edit</button>
-                  <button style={{ background: '#d32f2f', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', fontWeight: 600, fontSize: 14, cursor: 'pointer' }} onClick={() => alert('Delete feature coming soon!')}>Delete</button>
+                  {editId === item.id ? (
+                    <>
+                      <input value={editForm.name} onChange={e => setEditForm(f => ({ ...f, name: e.target.value }))} style={{ padding: 4, borderRadius: 4, border: '1px solid #ccc', marginRight: 8 }} />
+                      <input type="number" step="0.01" value={editForm.price} onChange={e => setEditForm(f => ({ ...f, price: e.target.value }))} style={{ padding: 4, borderRadius: 4, border: '1px solid #ccc', width: 80, marginRight: 8 }} />
+                      <input value={editForm.image} onChange={e => setEditForm(f => ({ ...f, image: e.target.value }))} placeholder="Image URL" style={{ padding: 4, borderRadius: 4, border: '1px solid #ccc', width: 120, marginRight: 8 }} />
+                      <button style={{ background: '#4caf50', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', fontWeight: 600, fontSize: 14, cursor: 'pointer', marginRight: 4 }} onClick={() => handleEditSave(item.id)}>Save</button>
+                      <button style={{ background: '#eee', color: '#111', border: 'none', borderRadius: 4, padding: '6px 12px', fontWeight: 600, fontSize: 14, cursor: 'pointer' }} onClick={() => setEditId(null)}>Cancel</button>
+                    </>
+                  ) : (
+                    <>
+                      <button style={{ background: '#ffc107', color: '#111', border: 'none', borderRadius: 4, padding: '6px 12px', fontWeight: 600, fontSize: 14, cursor: 'pointer' }} onClick={() => handleEdit(item)}>Edit</button>
+                      <button style={{ background: '#d32f2f', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', fontWeight: 600, fontSize: 14, cursor: 'pointer' }} onClick={() => handleDelete(item.id)}>Delete</button>
+                    </>
+                  )}
                 </div>
               )}
             </div>

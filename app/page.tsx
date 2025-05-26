@@ -20,7 +20,7 @@ const HomePage = () => {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1>🍽️ My Restaurant</h1>
+        <h1 style={{ fontSize: '3rem', fontWeight: 800, textAlign: 'center', width: '100%' }}>Serdy's Restaurant</h1>
         <div className={styles.icons}>
           <Link href="/checkout"><button className={styles.cart}>🛒</button></Link>
           {user && (
@@ -36,7 +36,6 @@ const HomePage = () => {
           )}
         </div>
       </header>
-      <input className={styles.search} type="text" placeholder="Search menu..." />
       <div className={styles.categories}>
         {categories.map(cat => (
           <Link key={cat.name} href={`/menu/${cat.name}`} className={styles.card}>

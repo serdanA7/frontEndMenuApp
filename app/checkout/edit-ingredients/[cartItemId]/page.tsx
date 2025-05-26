@@ -19,10 +19,16 @@ const EditIngredientsPage = () => {
     let ignore = false;
     async function fetchData() {
       setLoading(true);
+      const API_URL = process.env.NEXT_PUBLIC_API_URL;
+      if (!API_URL) {
+        setError("API URL not configured");
+        setLoading(false);
+        return;
+      }
       try {
         const [allRes, menuItemRes] = await Promise.all([
-          fetch("http://localhost:3001/api/v1/ingredients"),
-          fetch(`http://localhost:3001/api/v1/menu-items/${cartItemId}`)
+          fetch(`${API_URL}/ingredients`),
+          fetch(`${API_URL}/menu-items/${cartItemId}`)
         ]);
         const allData = await allRes.json();
         const menuItemData = await menuItemRes.json();
