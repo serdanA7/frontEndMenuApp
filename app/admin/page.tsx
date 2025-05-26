@@ -28,14 +28,16 @@ const AdminDashboard = () => {
   const [addIngredientName, setAddIngredientName] = useState("");
   const [editIngredients, setEditIngredients] = useState<number[]>([]);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
+
   useEffect(() => {
     if (user?.role !== 'admin') return;
-    fetch("http://localhost:3001/api/v1/menu-items")
+    fetch(`${API_URL}/menu-items`)
       .then(res => res.json())
       .then(data => setMenuItems(data))
       .catch(() => setError("Failed to load menu items"))
       .finally(() => setLoading(false));
-    fetch("http://localhost:3001/api/v1/ingredients")
+    fetch(`${API_URL}/ingredients`)
       .then(res => res.json())
       .then(data => setIngredients(data))
       .catch(() => setError("Failed to load ingredients"));
@@ -44,7 +46,7 @@ const AdminDashboard = () => {
   const handleDelete = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this menu item?")) return;
     try {
-      const res = await fetch(`http://localhost:3001/api/v1/menu-items/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_URL}/menu-items/${id}`, { method: 'DELETE' });
       if (res.ok) {
         setMenuItems(items => items.filter(item => item.id !== id));
       } else {
@@ -58,7 +60,7 @@ const AdminDashboard = () => {
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:3001/api/v1/menu-items', {
+      const res = await fetch(`${API_URL}/menu-items`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -93,7 +95,7 @@ const AdminDashboard = () => {
 
   const handleEditSave = async (id: number) => {
     try {
-      const res = await fetch(`http://localhost:3001/api/v1/menu-items/${id}`, {
+      const res = await fetch(`${API_URL}/menu-items/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -128,7 +130,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     if (!addIngredientName.trim()) return;
     try {
-      const res = await fetch('http://localhost:3001/api/v1/ingredients', {
+      const res = await fetch(`${API_URL}/ingredients`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: addIngredientName.trim() })
@@ -149,7 +151,7 @@ const AdminDashboard = () => {
   const handleDeleteIngredient = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this ingredient?")) return;
     try {
-      const res = await fetch(`http://localhost:3001/api/v1/ingredients/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_URL}/ingredients/${id}`, { method: 'DELETE' });
       if (res.ok) {
         setIngredients(ings => ings.filter(ing => ing.id !== id));
         // Remove from editIngredients if present
