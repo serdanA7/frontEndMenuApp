@@ -7,7 +7,8 @@ const corsHeaders = {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-export const BasketItemSchema = z.object({
+// Do NOT export this schema
+const BasketItemSchema = z.object({
     id: z.number(),
     name: z.string(),
     category: z.string(),
