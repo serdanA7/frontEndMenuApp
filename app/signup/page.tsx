@@ -21,7 +21,7 @@ const SignupPage = () => {
       return;
     }
     try {
-      const res = await fetch(`${API_URL.replace(/\/$/, "")}/auth/signup`, {
+      const res = await fetch(`${API_URL.replace(/\/$/, "")}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, username, password })
