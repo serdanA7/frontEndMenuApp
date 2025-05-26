@@ -15,7 +15,13 @@ const OrdersPage = () => {
     if (!user) return;
     setLoading(true);
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    fetch("http://localhost:3001/api/v1/orders/history", {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    if (!API_URL) {
+      setError('API URL not configured');
+      setLoading(false);
+      return;
+    }
+    fetch(`${API_URL}/orders/history`, {
       headers: {
         ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       }
@@ -40,8 +46,10 @@ const OrdersPage = () => {
   }, [user]);
 
   const handleOrderAgain = async (orderId: number) => {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    if (!API_URL) return;
     try {
-      const res = await fetch(`http://localhost:3001/api/v1/orders/repeat/${orderId}`, {
+      const res = await fetch(`${API_URL}/orders/repeat/${orderId}`, {
         method: "POST",
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' }

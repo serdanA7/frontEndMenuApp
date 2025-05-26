@@ -32,6 +32,9 @@ export const useCart = () => {
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  if (!API_URL) throw new Error('API URL not configured');
+
   // Helper to get the JWT token
   const getToken = () => (typeof window !== 'undefined' ? localStorage.getItem('token') : null);
 
@@ -39,7 +42,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const fetchCart = useCallback(async () => {
     try {
       const token = getToken();
-      const res = await fetch("http://localhost:3001/api/v1/orders/active", {
+      const res = await fetch(`${API_URL}/orders/active`, {
         headers: token ? { 'Authorization': `Bearer ${token}` } : undefined
       });
       if (!res.ok) return;
@@ -71,7 +74,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const token = getToken();
     const existing = cart.find((i) => i.id === item.id);
     const quantity = existing ? existing.quantity + 1 : 1;
-    await fetch("http://localhost:3001/api/v1/orders/cart/add", {
+    await fetch(`${API_URL}/orders/cart/add`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -84,7 +87,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const removeFromCart = async (id: number) => {
     const token = getToken();
-    await fetch("http://localhost:3001/api/v1/orders/cart/remove", {
+    await fetch(`${API_URL}/orders/cart/remove`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -99,7 +102,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const token = getToken();
     const item = cart.find(i => i.id === id);
     if (!item) return;
-    await fetch("http://localhost:3001/api/v1/orders/cart/add", {
+    await fetch(`${API_URL}/orders/cart/add`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -114,7 +117,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const token = getToken();
     const item = cart.find(i => i.id === id);
     if (!item) return;
-    await fetch("http://localhost:3001/api/v1/orders/cart/add", {
+    await fetch(`${API_URL}/orders/cart/add`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -127,7 +130,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const clearCart = async () => {
     const token = getToken();
-    await fetch("http://localhost:3001/api/v1/orders/cart/clear", {
+    await fetch(`${API_URL}/orders/cart/clear`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
