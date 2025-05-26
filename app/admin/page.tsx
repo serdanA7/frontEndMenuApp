@@ -252,7 +252,7 @@ const AdminDashboard = () => {
                     <>
                       <td>{item.name}</td>
                       <td>{item.category}</td>
-                      <td>${item.price.toFixed(2)}</td>
+                      <td>{typeof item.price === 'number' ? item.price.toFixed(2) : Number(item.price).toFixed ? Number(item.price).toFixed(2) : 'N/A'}</td>
                       <td>
                         <button style={{ color: '#111', background: '#ffc107', border: 'none', borderRadius: 4, padding: '4px 12px', marginRight: 8 }} onClick={() => handleEdit(item)}>Edit</button>
                         <button style={{ color: '#fff', background: '#d32f2f', border: 'none', borderRadius: 4, padding: '4px 12px' }} onClick={() => handleDelete(item.id)}>Delete</button>

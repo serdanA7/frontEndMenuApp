@@ -91,8 +91,8 @@ export default function Checkout() {
                   <span style={{ margin: '0 8px', color: '#111' }}>{item.quantity}</span>
                   <button style={{ color: '#111', background: '#f5f5f5', border: '1px solid #ccc', borderRadius: 4, padding: '2px 8px' }} onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
                 </td>
-                <td>${item.price.toFixed(2)}</td>
-                <td>${(item.price * item.quantity).toFixed(2)}</td>
+                <td>${typeof item.price === 'number' ? item.price.toFixed(2) : Number(item.price).toFixed ? Number(item.price).toFixed(2) : 'N/A'}</td>
+                <td>${typeof item.price === 'number' && typeof item.quantity === 'number' ? (item.price * item.quantity).toFixed(2) : 'N/A'}</td>
                 <td>
                   <button onClick={() => removeFromCart(item.id)} style={{ color: 'red', background: '#fff', border: '1px solid #ccc', borderRadius: 4, padding: '2px 8px' }}>Remove</button>
                   <br />
@@ -137,7 +137,7 @@ export default function Checkout() {
           </tbody>
         </table>
       )}
-      <div style={{ marginTop: 24, fontWeight: 'bold', color: '#111' }}>Total: ${total.toFixed(2)}</div>
+      <div style={{ marginTop: 24, fontWeight: 'bold', color: '#111' }}>Total: {typeof total === 'number' ? total.toFixed(2) : Number(total).toFixed ? Number(total).toFixed(2) : 'N/A'}</div>
       <button
         style={{ marginTop: 16, color: '#fff', background: '#4caf50', border: 'none', borderRadius: 4, padding: '8px 16px', fontWeight: 600, opacity: loading || cart.length === 0 ? 0.6 : 1, cursor: loading || cart.length === 0 ? 'not-allowed' : 'pointer' }}
         onClick={handleCheckout}
