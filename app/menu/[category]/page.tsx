@@ -29,6 +29,7 @@ const MenuCategoryPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [editId, setEditId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState<{ name: string; price: string; image?: string }>({ name: '', price: '', image: '' });
+  const [notification, setNotification] = useState<{ message: string; color: string } | null>(null);
 
   useEffect(() => {
     if (!category) return;
@@ -91,6 +92,17 @@ const MenuCategoryPage = () => {
     }
   };
 
+  const handleAddToCart = (item: MenuItem) => {
+    if (!user) {
+      setNotification({ message: 'You must log in before ordering', color: 'red' });
+      setTimeout(() => setNotification(null), 2000);
+      return;
+    }
+    addToCart({ id: item.id, name: item.name, price: item.price, image: item.image });
+    setNotification({ message: 'Item added to checkout list', color: 'green' });
+    setTimeout(() => setNotification(null), 2000);
+  };
+
   return (
     <div className={styles.container}>
       <h1 style={{ color: '#111', margin: '2rem 0 2rem 0', textAlign: 'center' }}>Menu Category: {category}</h1>
@@ -122,7 +134,7 @@ const MenuCategoryPage = () => {
             <div key={item.id} className={styles.card}>
               <img src={item.image} alt={item.name} className={styles.cardImg} />
               <div className={styles.cardText}>{item.name}</div>
-              <button style={{ position: 'absolute', right: 24, bottom: 18, zIndex: 3, background: '#111', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 18px', fontWeight: 600, fontSize: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.10)', cursor: 'pointer' }} onClick={() => addToCart({ id: item.id, name: item.name, price: item.price, image: item.image })}>
+              <button style={{ position: 'absolute', right: 24, bottom: 18, zIndex: 3, background: '#111', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 18px', fontWeight: 600, fontSize: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.10)', cursor: 'pointer' }} onClick={() => handleAddToCart(item)}>
                 Add to Basket
               </button>
               {user?.role === 'admin' && (
@@ -146,6 +158,22 @@ const MenuCategoryPage = () => {
             </div>
           ))}
         </div>
+      )}
+      {notification && (
+        <div style={{
+          position: 'fixed',
+          top: 30,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: notification.color,
+          color: '#fff',
+          padding: '14px 32px',
+          borderRadius: 8,
+          fontWeight: 600,
+          fontSize: 18,
+          zIndex: 9999,
+          boxShadow: '0 2px 16px rgba(0,0,0,0.15)'
+        }}>{notification.message}</div>
       )}
     </div>
   );

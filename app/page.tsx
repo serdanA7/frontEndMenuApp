@@ -8,10 +8,10 @@ import { useUser } from "./context/UserContext";
 import UserMenu from "./components/UserMenu";
 
 const categories = [
-  { name: 'Breakfast', image: '/breakfast.jpg' },
-  { name: 'Dinner', image: '/dinner.jpg' },
-  { name: 'Dessert', image: '/dessert.jpg' },
-  { name: 'Bar', image: '/bar.jpg' },
+  { name: 'Breakfast', image: 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&w=500' },
+  { name: 'Dinner', image: 'https://images.pexels.com/photos/46239/salmon-dish-food-meal-46239.jpeg?auto=compress&w=500' },
+  { name: 'Dessert', image: 'https://images.pexels.com/photos/533325/pexels-photo-533325.jpeg?auto=compress&w=500' },
+  { name: 'Bar', image: 'https://images.pexels.com/photos/209594/pexels-photo-209594.jpeg?auto=compress&w=500' },
 ];
 
 const HomePage = () => {
