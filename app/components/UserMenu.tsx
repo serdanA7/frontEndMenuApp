@@ -35,7 +35,6 @@ const UserMenu: React.FC = () => {
             <div className={styles.userEmail}>{user?.email}</div>
           </div>
           <div className={styles.menuDivider} />
-          <div className={styles.menuItem}>ACCOUNT SETTINGS</div>
           <button
             className={styles.logoutBtn}
             onClick={() => {

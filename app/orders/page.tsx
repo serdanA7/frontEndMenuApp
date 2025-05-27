@@ -93,6 +93,7 @@ const OrdersPage = () => {
                         {order.OrderItems?.map((item: any) => (
                           <li key={item.id}>
                             {item.MenuItem?.name || 'Item'} x{item.quantity}
+                            {item.price_at_time ? ` ($${Number(item.price_at_time).toFixed(2)} each)` : ""}
                             {item.CustomOrderIngredients && item.CustomOrderIngredients.length > 0 && (
                               <span style={{ color: '#888', fontSize: 12 }}> ({item.CustomOrderIngredients.map((ing: any) => ing.ingredient_name).join(", ")})</span>
                             )}
