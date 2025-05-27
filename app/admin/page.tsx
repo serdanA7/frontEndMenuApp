@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
-import { useRouter } from "next/navigation";
 
 interface MenuItem {
   id: number;
@@ -28,7 +27,6 @@ const AdminDashboard = () => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [addIngredientName, setAddIngredientName] = useState("");
   const [editIngredients, setEditIngredients] = useState<number[]>([]);
-  const router = useRouter();
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   if (!API_URL) {
@@ -178,10 +176,7 @@ const AdminDashboard = () => {
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '2rem', background: '#fff', minHeight: '100vh', color: '#111' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-        <h1 style={{ color: '#111', margin: 0 }}>Admin Dashboard</h1>
-        <button onClick={() => router.push("/")} style={{ background: '#eee', color: '#111', border: 'none', borderRadius: 4, padding: '8px 18px', fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>🏠 Home</button>
-      </div>
+      <h1 style={{ color: '#111', marginBottom: 24 }}>Admin Dashboard</h1>
       <section style={{ marginBottom: 40 }}>
         <h2>Menu Item Management</h2>
         <form onSubmit={handleAddIngredient} style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'center' }}>

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
 import { useCart } from "../context/CartContext";
-import { useRouter } from "next/navigation";
 
 const OrdersPage = () => {
   const { user } = useUser();
@@ -11,7 +10,6 @@ const OrdersPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const router = useRouter();
 
   useEffect(() => {
     if (!user) return;
@@ -70,10 +68,7 @@ const OrdersPage = () => {
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '2rem', background: '#fff', minHeight: '100vh', color: '#111' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <h1 style={{ color: '#111', margin: 0 }}>Previous Orders</h1>
-        <button onClick={() => router.push("/")} style={{ background: '#eee', color: '#111', border: 'none', borderRadius: 4, padding: '8px 18px', fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>🏠 Home</button>
-      </div>
+      <h1 style={{ color: '#111', marginBottom: 24 }}>Previous Orders</h1>
       {success && <div style={{ background: '#4caf50', color: '#fff', padding: 12, borderRadius: 8, marginBottom: 16, textAlign: 'center', fontWeight: 600 }}>{success}</div>}
       {loading ? <p>Loading...</p> : error ? <p style={{ color: 'red' }}>{error}</p> : (
         <>

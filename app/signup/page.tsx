@@ -44,10 +44,7 @@ const SignupPage = () => {
   return (
     <div style={{ minHeight: "100vh", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ background: "#fff", borderRadius: 12, boxShadow: "0 2px 16px rgba(0,0,0,0.08)", padding: "2.5rem 2rem", minWidth: 320 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-          <h1 style={{ color: "#111", margin: 0 }}>Sign Up</h1>
-          <button onClick={() => router.push("/")} style={{ background: '#eee', color: '#111', border: 'none', borderRadius: 4, padding: '8px 18px', fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>🏠 Home</button>
-        </div>
+        <h1 style={{ color: "#111", textAlign: "center", marginBottom: 24 }}>Sign Up</h1>
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: 16 }}>
             <label htmlFor="username" style={{ color: "#111", display: "block", marginBottom: 6 }}>Username</label>
