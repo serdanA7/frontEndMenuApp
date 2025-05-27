@@ -24,7 +24,7 @@ const SignupPage = () => {
       const res = await fetch(`${API_URL.replace(/\/$/, "")}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, username, password })
+        body: JSON.stringify({ email, username, password_hash: password })
       });
       if (res.ok) {
         setNotification({ message: "Account created! Please log in.", color: "green" });
