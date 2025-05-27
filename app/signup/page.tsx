@@ -31,6 +31,7 @@ const SignupPage = () => {
         setTimeout(() => router.push("/login"), 1500);
       } else {
         const data = await res.json();
+        console.log("Signup error response:", data);
         setNotification({ message: data.error || "Signup failed", color: "red" });
       }
     } catch {
